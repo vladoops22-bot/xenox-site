@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>XENOX TEAM — CS2 Esports</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0e0f13;
+  --panel:#151821;
+  --panel2:#0b0d12;
+  --line:#2a2f3a;
+  --accent:#3b82f6;
+  --accent2:#1e40af;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --good:#22c55e;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* Header */
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(14,15,19,.9);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav{
+  max-width:1200px;
+  margin:0 auto;
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.logo{
+  font-family:Orbitron,sans-serif;
+  font-weight:700;
+  letter-spacing:4px;
+  white-space:nowrap;
+}
+.menu{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.menu a{
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:600;
+  transition:.2s;
+  padding:8px 10px;
+  border-radius:12px;
+}
+.menu a:hover{color:#fff;background:rgba(255,255,255,.04)}
+
+/* Layout / Views */
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 20px 80px;
+}
+.view{display:none; animation:fade .35s ease}
+.view.active{display:block}
+
+/* Hero */
+.hero{
+  min-height:calc(100vh - 72px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:50px 0 30px;
+  background:
+    radial-gradient(circle at top,rgba(59,130,246,.25),transparent 60%),
+    linear-gradient(135deg,#0b0d12,#06070a);
+  border-bottom:1px solid var(--line);
+}
+.hero h1{
+  font-family:Orbitron,sans-serif;
+  font-size:64px;
+  letter-spacing:8px;
+  margin:0;
+}
+.hero p{
+  margin:18px 0 34px;
+  color:var(--muted);
+  font-size:18px;
+}
+.hero-actions{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.btn{
+  padding:14px 22px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:#fff;
+  text-decoration:none;
+  font-weight:600;
+  transition:.25s;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.btn:hover{
+  transform:translateY(-3px);
+  border-color:var(--accent);
+  box-shadow:0 15px 40px rgba(0,0,0,.6);
+}
+.btn.ghost{
+  background:transparent;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font-size:13px;
+  justify-content:center;
+  margin-top:14px;
+}
+.dot{width:8px;height:8px;border-radius:999px;background:var(--good);display:inline-block}
+
+/* Sections */
+.section{
+  padding:70px 0 0;
+}
+h2{
+  font-family:Orbitron,sans-serif;
+  text-align:center;
+  font-size:34px;
+  margin:0 0 34px;
+}
+
+/* Lists */
+.list{
+  max-width:980px;
+  margin:0 auto;
+  display:grid;
+  gap:18px;
+}
+.item{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:22px;
+}
+.item h3{
+  margin:0 0 10px;
+  font-family:Orbitron,sans-serif;
+  font-size:18px;
+}
+.item p{margin:0;color:var(--muted);line-height:1.55}
+
+/* Toggle */
+.toggle{
+  display:flex;
+  justify-content:center;
+  margin:0 0 26px;
+}
+.toggle button{
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--muted);
+  padding:12px 24px;
+  cursor:pointer;
+  font-family:Orbitron,sans-serif;
+  transition:.25s;
+}
+.toggle button:first-child{border-radius:16px 0 0 16px}
+.toggle button:last-child{border-radius:0 16px 16px 0}
+.toggle button.active{
+  color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+}
+
+/* Team cards */
+.team{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  max-width:1100px;
+  margin:0 auto;
+}
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:22px;
+  text-align:center;
+  transition:.25s;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 50px rgba(0,0,0,.65);
+}
+.card.selected{
+  border-color:rgba(59,130,246,.65);
+  box-shadow:0 18px 55px rgba(59,130,246,.18);
+  transform:translateY(-6px) scale(1.01);
+}
+.card.selected::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:radial-gradient(circle at top,rgba(59,130,246,.35),transparent 55%);
+  opacity:.9;
+  pointer-events:none;
+}
+.card h3{margin:12px 0 6px;font-size:22px;position:relative;z-index:1}
+.card .role{color:var(--accent);font-size:13px;position:relative;z-index:1}
+.card .lvl{color:var(--muted);font-size:12px;margin-top:6px;position:relative;z-index:1}
+.faceit-link{
+  margin-top:12px;
+  display:inline-flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  position:relative;
+  z-index:1;
+}
+.faceit-link a{
+  color:var(--muted);
+  text-decoration:none;
+  border-bottom:1px dashed rgba(156,163,175,.35);
+  padding-bottom:2px;
+}
+.faceit-link a:hover{color:#fff;border-bottom-color:rgba(255,255,255,.35)}
+.faceit-icon{
+  width:18px;height:18px;border-radius:6px;
+  border:1px solid var(--line);
+  background:linear-gradient(135deg,#0f172a,#020617);
+  display:inline-block;
+  position:relative;
+}
+.faceit-icon::after{
+  content:"F";
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:Orbitron,sans-serif;
+  font-size:12px; color:#fff;
+}
+
+
+/* Roster switch animation */
+.team{
+  transition: opacity .22s ease, transform .22s ease;
+  transform: translateY(0);
+  opacity: 1;
+}
+.team.is-hiding{
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events:none;
+}
+
+/* Reserve tag */
+.tag{
+  position:absolute;
+  top:14px;
+  left:14px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(11,13,18,.9);
+  color:#fff;
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  z-index:2;
+}
+
+/* Back button */
+.back-row{
+  display:flex;
+  justify-content:center;
+  margin:26px 0 0;
+}
+.back-btn{
+  padding:12px 18px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:#fff;
+  cursor:pointer;
+  font-weight:600;
+  transition:.25s;
+}
+.back-btn:hover{
+  transform:translateY(-2px);
+  border-color:rgba(59,130,246,.6);
+  box-shadow:0 14px 30px rgba(0,0,0,.55);
+}
+
+/* Profile */
+.profile-wrap{
+  max-width:980px;
+  margin:0 auto;
+}
+.profile{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:28px;
+}
+.profile-top{
+  display:flex;
+  gap:22px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.avatar{
+  width:150px;height:150px;border-radius:22px;
+  background:linear-gradient(135deg,#1e293b,#020617);
+  background-image:url("data:image/png;base64,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");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.pname{
+  font-family:Orbitron,sans-serif;
+  font-size:30px;
+  margin:0;
+}
+.prole{margin-top:8px;color:var(--accent);font-weight:600}
+.pmeta{margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:14px}
+.pmeta a{color:var(--muted);text-decoration:none;border-bottom:1px dashed rgba(156,163,175,.35)}
+.pmeta a:hover{color:#fff;border-bottom-color:rgba(255,255,255,.35)}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:14px;
+  margin-top:22px;
+}
+.stat{
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+}
+.stat .k{color:var(--muted);font-size:12px}
+.stat .v{margin-top:6px;font-weight:700}
+
+.tabs{
+  display:flex;
+  gap:10px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+.tab-btn{
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:#fff;
+  cursor:pointer;
+  font-weight:700;
+  transition:.2s;
+}
+.tab-btn.active{
+  border-color:rgba(59,130,246,.65);
+  background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(30,64,175,.25));
+}
+.tab{
+  display:none;
+  margin-top:14px;
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  color:var(--muted);
+  line-height:1.6;
+}
+.tab.active{display:block}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:28px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+
+@keyframes fade{
+  from{opacity:0; transform:translateY(10px)}
+  to{opacity:1; transform:none}
+}
+.small{
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="nav">
+    <div class="logo">XENOX TEAM</div>
+    <nav class="menu">
+      <a href="#" data-view="home">Главная</a>
+      <a href="#" data-view="news">Новости</a>
+      <a href="#" data-view="roster">Состав</a>
+      <a href="#" data-view="matches">Матчи</a>
+      <a href="#" data-view="staff">Сотрудники</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero view active" id="view-home">
+  <div class="container" style="padding-bottom:0;">
+    <div>
+      <h1>XENOX TEAM</h1>
+      <p>Professional Counter‑Strike 2 Esports Team</p>
+      <div class="hero-actions">
+        <a class="btn" href="#" data-view="news">Новости</a>
+        <a class="btn" href="#" data-view="roster">Ростер</a>
+        <a class="btn" href="#" data-view="matches">Предстоящие матчи</a>
+      </div>
+      <div class="badge"><span class="dot"></span><span>Официальный сайт команды (макет)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- NEWS -->
+  <div class="view" id="view-news">
+    <div class="section">
+      <h2>LATEST NEWS</h2>
+      <div class="list">
+        <div class="item">
+          <h3>🔥 Обновление ростера</h3>
+          <p>Добавлен основной состав и академка. Профили игроков открываются по повторному клику (или двойному клику).</p>
+        </div>
+        <div class="item">
+          <h3>FACEIT у всех игроков</h3>
+          <p>Во всех карточках и профилях отображается FACEIT одинаково (ссылка + уровень).</p>
+        </div>
+      </div>
+      <div class="back-row">
+        <button class="back-btn" data-view="home">Назад</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROSTER -->
+  <div class="view" id="view-roster">
+    <div class="section">
+      <h2>ROSTER</h2>
+
+      <div class="toggle">
+        <button class="active" id="btn-main" type="button">MAIN</button>
+        <button id="btn-academy" type="button">ACADEMY</button>
+      </div>
+
+      <div id="roster-main" class="team"></div>
+      <div id="roster-academy" class="team" style="display:none"></div>
+
+      <div class="small">Клик по игроку — выделение. Повторный клик — профиль (также работает двойной клик).</div>
+
+      <div class="back-row">
+        <button class="back-btn" data-view="home">Назад</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATCHES -->
+  <div class="view" id="view-matches">
+    <div class="section">
+      <h2>UPCOMING MATCHES</h2>
+      <div class="list">
+        <div class="item">
+          <h3>XENOX TEAM vs TBA</h3>
+          <p>Online · BO3 · Дата: Soon</p>
+        </div>
+        <div class="item">
+          <h3>ACADEMY vs TBA</h3>
+          <p>Online · BO1 · Дата: Soon</p>
+        </div>
+      </div>
+      <div class="back-row">
+        <button class="back-btn" data-view="home">Назад</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAFF -->
+  <div class="view" id="view-staff">
+    <div class="section">
+      <h2>НАШИ СОТРУДНИКИ</h2>
+      <div class="team">
+        <div class="card" style="cursor:default">
+          <h3>Lorax</h3>
+          <div class="role">CEO</div>
+          <div class="lvl">MAIN состава</div>
+        </div>
+        <div class="card" style="cursor:default">
+          <h3>Manager</h3>
+          <div class="role">Management</div>
+          <div class="lvl">TBA</div>
+        </div>
+        <div class="card" style="cursor:default">
+          <h3>Coach</h3>
+          <div class="role">Strategy</div>
+          <div class="lvl">TBA</div>
+        </div>
+      </div>
+      <div class="back-row">
+        <button class="back-btn" data-view="home">Назад</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="view" id="view-profile">
+    <div class="section">
+      <h2>PLAYER</h2>
+
+      <div class="profile-wrap">
+        <div class="profile">
+          <div class="profile-top">
+            <div class="avatar" id="p-avatar"></div>
+            <div>
+              <p class="pname" id="p-name">Player</p>
+              <div class="prole" id="p-role">Role</div>
+              <div class="pmeta">
+                <span id="p-teamtag">MAIN</span>
+                <span>·</span>
+                <span id="p-level">FACEIT · lvl</span>
+                <span>·</span>
+                <span class="faceit-link">
+                  <span class="faceit-icon"></span>
+                  <a id="p-faceit" href="#" target="_blank" rel="noopener">Открыть FACEIT</a>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="k">Favorite Weapon</div>
+              <div class="v" id="fav-weapon">Unknown</div>
+            </div>
+            <div class="stat">
+              <div class="k">Favorite Map</div>
+              <div class="v" id="fav-map">Unknown</div>
+            </div>
+          </div>
+
+          <div class="tabs">
+            <button class="tab-btn active" id="tabbtn-bio" type="button">Biography</button>
+            <button class="tab-btn" id="tabbtn-hl" type="button">Highlights</button>
+          </div>
+
+          <div class="tab active" id="tab-bio">
+            Биография: <strong>позже добавишь вручную</strong>. Сейчас стоит заглушка.
+          </div>
+          <div class="tab" id="tab-hl">
+            Highlights: сюда можно добавить ссылки на клипы/видео (YouTube/Twitch) — позже.
+          </div>
+
+          <div class="back-row">
+            <button class="back-btn" id="back-from-profile" type="button">Назад</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2026 XENOX TEAM · CS2 ESPORTS</footer>
+
+<script>
+/** DATA **/
+const playersMain = [
+{ id:"decent", nick:"decent", role:"Кэп (IGL)", faceit:"https://www.faceit.com/ru/players/nmall", lvl:"10" },
+  { id:"l1tsh0t", nick:"l1tsh0t", role:"АВП (AWP)", faceit:"https://www.faceit.com/ru/players/L1TSH0T", lvl:"10" },
+  { id:"h1to666", nick:"h1to666", role:"Энтри (Entry)", faceit:"https://www.faceit.com/ru/players/h1to666", lvl:"10" },
+  { id:"shxxxzo", nick:"shxxxzo", role:"Люркер (Lurker)", faceit:"https://www.faceit.com/ru/players/shxxxzo", lvl:"10" },
+  { id:"V1zeEx", nick:"V1zeEx", role:"Рифла (Rifler)", faceit:"https://www.faceit.com/ru/players/V1zeEx", lvl:"10" },
+  { id:"reserve1", nick:"TBA", role:"Запас", faceit:"#", lvl:"-", reserve:true },
+  { id:"reserve2", nick:"TBA", role:"Запас", faceit:"#", lvl:"-", reserve:true }
+];
+
+const playersAcademy = [
+  { id:"sojerio", nick:"sojerio", role:"IGL", faceit:"https://www.faceit.com/ru/players/sojerio", lvl:"8" },
+  { id:"F0b1s", nick:"F0b1s", role:"Entry", faceit:"https://www.faceit.com/ru/players/F0b1s666", lvl:"8" },
+  { id:"marsik", nick:"marsik", role:"AWP", faceit:"https://www.faceit.com/ru/players/marsik15", lvl:"8" },
+  { id:"oTMoRoZzoK37", nick:"oTMoRoZzoK37", role:"Rifler", faceit:"https://www.faceit.com/ru/players/oTMoRoZzoK37", lvl:"9" },
+  { id:"sale", nick:"sale", role:"Rifler", faceit:"https://www.faceit.com/ru/players/---Sale--", lvl:"10" }
+];
+
+let currentRoster = "main";
+let selectedCardId = null;
+let lastView = "home";
+
+/** VIEW NAV **/
+function showView(view){
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  const el = document.getElementById(`view-${view}`);
+  if(el) el.classList.add("active");
+  // clear selection when switching away from roster
+  if(view !== "roster") clearSelection();
+  if(view !== "profile") lastView = view;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+document.querySelectorAll("[data-view]").forEach(a => {
+  a.addEventListener("click", (e) => {
+    e.preventDefault();
+    const view = a.getAttribute("data-view");
+    if(view) showView(view);
+  });
+});
+
+/** TOGGLE **/
+const btnMain = document.getElementById("btn-main");
+const btnAcad = document.getElementById("btn-academy");
+btnMain.addEventListener("click", () => setRoster("main"));
+btnAcad.addEventListener("click", () => setRoster("academy"));
+
+function setRoster(type){
+  const mainEl = document.getElementById("roster-main");
+  const acadEl = document.getElementById("roster-academy");
+
+  // animate current roster out
+  const currentEl = (currentRoster === "main") ? mainEl : acadEl;
+  const nextEl = (type === "main") ? mainEl : acadEl;
+
+  if(currentEl !== nextEl){
+    currentEl.classList.add("is-hiding");
+  }
+
+  // after fade-out, swap, then fade-in
+  window.setTimeout(() => {
+    currentRoster = type;
+
+    btnMain.classList.toggle("active", type==="main");
+    btnAcad.classList.toggle("active", type==="academy");
+
+    mainEl.style.display = type==="main" ? "grid" : "none";
+    acadEl.style.display = type==="academy" ? "grid" : "none";
+
+    // reset classes
+    mainEl.classList.remove("is-hiding");
+    acadEl.classList.remove("is-hiding");
+
+    // ensure next appears from hidden state then fade-in
+    nextEl.classList.add("is-hiding");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => nextEl.classList.remove("is-hiding"));
+    });
+
+    clearSelection();
+  }, 210);
+}
+
+/** RENDER CARDS **/
+function cardHTML(p, teamTag){
+  const reserveTag = p.reserve ? `<div class="tag">Запас</div>` : "";
+  const faceitDisabled = (p.faceit === "#" || !p.faceit);
+  const faceitHref = faceitDisabled ? "javascript:void(0)" : p.faceit;
+  const faceitStyle = faceitDisabled ? 'style="pointer-events:none;opacity:.65;border-bottom-color:transparent"' : "";
+  return `
+    <div class="card" data-id="${p.id}" data-team="${teamTag}">
+      ${reserveTag}
+      <div class="faceit-link" style="justify-content:center;">
+        <span class="faceit-icon"></span>
+        <a href="${faceitHref}" target="_blank" rel="noopener" onclick="event.stopPropagation()" ${faceitStyle}>FACEIT · ${p.lvl} lvl</a>
+      </div>
+      <h3>${p.nick}</h3>
+      <div class="role">${p.role}</div>
+      <div class="lvl">Клик → выделить · повторный клик → профиль</div>
+    </div>
+  `;
+}
+
+function renderRosters(){
+  const mainEl = document.getElementById("roster-main");
+  const acadEl = document.getElementById("roster-academy");
+  mainEl.innerHTML = playersMain.map(p => cardHTML(p, "MAIN")).join("");
+  acadEl.innerHTML = playersAcademy.map(p => cardHTML(p, "ACADEMY")).join("");
+
+  [mainEl, acadEl].forEach(root => {
+    root.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("click", () => handlePlayerClick(card));
+      card.addEventListener("dblclick", () => openProfileFromCard(card));
+    });
+  });
+}
+
+function clearSelection(){
+  selectedCardId = null;
+  document.querySelectorAll(".card.selected").forEach(c => c.classList.remove("selected"));
+}
+
+function handlePlayerClick(card){
+  const id = card.getAttribute("data-id");
+  // first click -> select + animation
+  if(selectedCardId !== id){
+    clearSelection();
+    selectedCardId = id;
+    card.classList.add("selected");
+    return;
+  }
+  // second click on the same player -> open profile
+  openProfileFromCard(card);
+}
+
+function openProfileFromCard(card){
+  const id = card.getAttribute("data-id");
+  const team = card.getAttribute("data-team");
+  const p = (team === "MAIN" ? playersMain : playersAcademy).find(x => x.id === id);
+  if(!p) return;
+
+  // fill profile
+  document.getElementById("p-name").textContent = p.nick;
+  // same silhouette for all players (можно заменить на разные фото позже)
+
+  document.getElementById("p-role").textContent = p.role;
+  document.getElementById("p-teamtag").textContent = team;
+  document.getElementById("p-level").textContent = `FACEIT · ${p.lvl} lvl`;
+
+  const faceitA = document.getElementById("p-faceit");
+  faceitA.href = p.faceit;
+
+  const fav = favorites[p.nick] || {map:"Unknown", weapon:"Unknown"};
+  document.getElementById("fav-map").textContent = fav.map;
+  document.getElementById("fav-weapon").textContent = fav.weapon;
+
+  // tabs default
+  setTab("bio");
+
+  showView("profile");
+}
+
+document.getElementById("back-from-profile").addEventListener("click", () => showView(lastView));
+
+/** TABS **/
+document.getElementById("tabbtn-bio").addEventListener("click", () => setTab("bio"));
+document.getElementById("tabbtn-hl").addEventListener("click", () => setTab("hl"));
+
+function setTab(which){
+  const bBio = document.getElementById("tabbtn-bio");
+  const bHl  = document.getElementById("tabbtn-hl");
+  const tBio = document.getElementById("tab-bio");
+  const tHl  = document.getElementById("tab-hl");
+
+  const isBio = which === "bio";
+  bBio.classList.toggle("active", isBio);
+  bHl.classList.toggle("active", !isBio);
+  tBio.classList.toggle("active", isBio);
+  tHl.classList.toggle("active", !isBio);
+}
+
+
+/** FAVORITES **/
+const favorites = {
+  "V1zeEx": { map:"Mirage", weapon:"AK-47" },
+  "l1tsh0t": { map:"Ancient", weapon:"AWP" },
+  "decent": { map:"Anubis", weapon:"Desert Eagle" },
+  "h1to666": { map:"Anubis", weapon:"AK-47" },
+  "shxxxzo": { map:"Mirage", weapon:"AK-47" },
+
+  "sojerio": { map:"Overpass", weapon:"AWP" },
+  "F0b1s": { map:"Overpass", weapon:"AWP" },
+  "oTMoRoZzoK37": { map:"Mirage", weapon:"AK-47" },
+  "marsik": { map:"Nuke", weapon:"Desert Eagle" },
+  "sale": { map:"Mirage", weapon:"M4A4" }
+};
+
+/** INIT **/
+renderRosters();
+setRoster("main");
+</script>
+
+</body>
+</html>
